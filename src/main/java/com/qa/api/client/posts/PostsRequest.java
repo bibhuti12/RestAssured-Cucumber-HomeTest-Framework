@@ -1,0 +1,33 @@
+package com.qa.api.client.posts;
+
+import com.aventstack.extentreports.Status;
+import com.qa.api.client.user.UserEndpoints;
+import com.qa.api.core.BaseRequest;
+import com.qa.api.core.RestResource;
+import com.qa.api.core.response.IResponse;
+import com.qa.api.enums.MethodType;
+import com.qa.api.pojo.Posts;
+import com.qa.api.pojo.Users;
+import com.qa.api.utils.GenericUtil;
+import com.qa.api.utils.ReporterFactory;
+
+import static com.qa.api.config.FrameworkConfigFactory.getConfig;
+
+/**
+ * @author bjha
+ */
+public class PostsRequest {
+
+
+    public IResponse createPost(Posts posts) throws Exception {
+
+        String Url =
+                getConfig().getProtocol()+ "://" + getConfig().getHost() + PostsEndpoints.POSTS.getPath();
+        ReporterFactory.getInstance().getExtentTest().log(Status.INFO,"URL: "+Url);
+
+        BaseRequest baseRequest =   BaseRequest.builder(PostsEndpoints.POSTS.getPath(), MethodType.POST).baseURI(getConfig().getProtocol()+ "://" + getConfig().getHost()).body(posts).headers(GenericUtil.getCommonHeader()).build();
+
+        return new RestResource().executeApi(baseRequest);
+    }
+
+}
